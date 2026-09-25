@@ -2,7 +2,7 @@
 
 ## Direção do vertical slice
 
-Uma cidade compacta e original, inspirada em vida urbana brasileira, com câmera em terceira pessoa, exploração a pé, direção arcade de carro e moto, casas, posto, NPCs e HUD mobile-first.
+Uma cidade compacta e original, inspirada em São Paulo, com Centro, Paulista, bairros residenciais, comércio, viaduto, prédios, ônibus, câmera em terceira pessoa, exploração a pé, direção arcade de carro e moto, NPCs e HUD mobile-first.
 
 ## Risk Tasks
 
@@ -30,6 +30,7 @@ Uma cidade compacta e original, inspirada em vida urbana brasileira, com câmera
 
 - **Assets needed:** referência visual gerada, logo original GTA REIS, textura de parede/billboard, malhas procedurais para casas, carro, moto, personagem, NPCs, ruas, árvores, posto e marcadores.
 - **Gameplay:** explorar a cidade, visitar casas, entrar em carro ou moto, completar checkpoints de entrega, acumular dinheiro e reputação, observar NPCs.
+- **São Paulo:** skyline e marcos ficcionais, fachadas e asfalto texturizados, oficina, mercado, viaduto e corredores urbanos; nenhum endereço real é reproduzido em escala 1:1.
 - **HUD:** nome do jogo, dinheiro, reputação, status da missão, minimapa simplificado, dica contextual e botões touch.
 - **Verify:**
   - Movimento responde a WASD/setas e aos controles touch.
@@ -39,6 +40,7 @@ Uma cidade compacta e original, inspirada em vida urbana brasileira, com câmera
   - HUD legível em viewport desktop e mobile.
   - O marcador de missão atualiza checkpoints e dinheiro.
   - Não há erros de console durante a captura.
+  - A escala dinâmica reduz a resolução interna quando o FPS cai, sem congelar o jogo.
   - A paleta usa midnight blue, teal, amber e coral, com identidade própria.
   - **Presentation proof:** capturas `/` e `/?demo` no preview WebDev.
 

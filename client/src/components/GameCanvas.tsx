@@ -25,10 +25,11 @@ export default function GameCanvas() {
     if (!canvas || startedRef.current) return;
     startedRef.current = true;
     const engine = new Engine(canvas, true, {
-      preserveDrawingBuffer: true,
+      preserveDrawingBuffer: false,
       stencil: true,
-      adaptToDeviceRatio: true,
+      adaptToDeviceRatio: false,
     });
+    engine.setHardwareScalingLevel(1.2);
     let handle: GameHandle | null = null;
     let disposed = false;
     createGameScene(engine, canvas).then((next) => {
@@ -37,7 +38,23 @@ export default function GameCanvas() {
         return;
       }
       handle = next;
-      engine.runRenderLoop(() => next.scene.render());
+      let firstFrame = true;
+      let qualityTimer = 0;
+      engine.runRenderLoop(() => {
+        next.scene.render();
+        qualityTimer += engine.getDeltaTime();
+        if (qualityTimer > 1400) {
+          const fps = engine.getFps();
+          if (fps < 34) engine.setHardwareScalingLevel(1.75);
+          else if (fps < 46) engine.setHardwareScalingLevel(1.45);
+          else if (fps > 56) engine.setHardwareScalingLevel(1.15);
+          qualityTimer = 0;
+        }
+        if (firstFrame) {
+          firstFrame = false;
+          requestAnimationFrame(() => document.getElementById("loading-screen")?.classList.add("is-hidden"));
+        }
+      });
     });
     const onResize = () => engine.resize();
     window.addEventListener("resize", onResize);
@@ -53,13 +70,19 @@ export default function GameCanvas() {
   return (
     <main className="game-shell">
       <canvas ref={canvasRef} className="game-canvas" style={{ touchAction: "none" }} />
+      <div className="loading-screen" id="loading-screen">
+        <div className="loading-mark">♛</div>
+        <div className="loading-title">CIDADE DE REIS</div>
+        <div className="loading-copy">Abrindo as avenidas de São Paulo...</div>
+        <div className="loading-bar"><span /></div>
+      </div>
       <div className="hud" aria-live="polite">
         <div className="hud-topline">
           <div className="brand-lockup">
             <div className="brand-mark">♛</div>
             <div>
               <div className="brand-title">GTA REIS</div>
-              <div className="brand-subtitle">CIDADE DE REIS · DEMO</div>
+              <div className="brand-subtitle">SÃO PAULO · CIDADE DE REIS</div>
             </div>
           </div>
           <div className="stat-cluster">
