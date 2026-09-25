@@ -2,7 +2,7 @@
 
 ## Direção do vertical slice
 
-Uma cidade compacta e original, inspirada em São Paulo, com Centro, Paulista, bairros residenciais, comércio, viaduto, prédios, ônibus, câmera em terceira pessoa, exploração a pé, direção arcade de carro e moto, NPCs e HUD mobile-first.
+Uma cidade original inspirada em São Paulo, reconstruída no padrão visual de simulador RP mobile: escala humana, câmera de perseguição, avenidas densas, prédios de uso misto, pedestres, carros estacionados, ônibus, motos, casas, empregos e interface compacta de vida urbana.
 
 ## Risk Tasks
 
@@ -26,9 +26,14 @@ Uma cidade compacta e original, inspirada em São Paulo, com Centro, Paulista, b
 - **Approach:** AudioManager Web Audio minimalista, desbloqueado no primeiro input, com tom de motor, buzina e passos procedurais; tudo opcional e tolerante a erro.
 - **Verify:** Primeiro toque/tecla desbloqueia áudio sem erro; buzina e motor respondem ao estado do jogador; jogo continua silencioso de modo funcional se o navegador bloquear áudio.
 
+### 5. Densidade de cidade RP
+- **Why isolated:** A cena anterior parecia uma pista vazia porque poucos blocos e atores ocupavam o campo de visão.
+- **Approach:** Aumentar a malha de quadras, fachadas, veículos estacionados, pedestres e pontos de interesse, mantendo instancing/procedural meshes leves e uma câmera de escala humana.
+- **Verify:** A captura inicial mostra uma avenida viva com pelo menos 12 fachadas, 6 veículos visíveis, pedestres e um ponto de serviço sem destruir o FPS.
+
 ## Main Build
 
-- **Assets needed:** referência visual gerada, logo original GTA REIS, textura de parede/billboard, malhas procedurais para casas, carro, moto, personagem, NPCs, ruas, árvores, posto e marcadores.
+- **Assets needed:** alvo RP gerado, referências de carro/personagem/cidade, logo original GTA REIS, texturas de parede/asfalto, malhas procedurais arredondadas para casas, carro, moto, personagem, NPCs, ruas, árvores, posto e marcadores.
 - **Gameplay:** explorar a cidade, visitar casas, entrar em carro ou moto, completar checkpoints de entrega, acumular dinheiro e reputação, observar NPCs.
 - **São Paulo:** skyline e marcos ficcionais, fachadas e asfalto texturizados, oficina, mercado, viaduto e corredores urbanos; nenhum endereço real é reproduzido em escala 1:1.
 - **HUD:** nome do jogo, dinheiro, reputação, status da missão, minimapa simplificado, dica contextual e botões touch.
@@ -36,12 +41,12 @@ Uma cidade compacta e original, inspirada em São Paulo, com Centro, Paulista, b
   - Movimento responde a WASD/setas e aos controles touch.
   - A câmera e o personagem respondem com transições suaves.
   - Carro e moto têm diferença de aceleração e direção.
-  - Casas, posto, NPCs e ruas estão visíveis e sem materiais ausentes.
+  - Fachadas, posto, veículos estacionados, pedestres, comércio e ruas estão visíveis e sem materiais ausentes.
   - HUD legível em viewport desktop e mobile.
   - O marcador de missão atualiza checkpoints e dinheiro.
   - Não há erros de console durante a captura.
   - A escala dinâmica reduz a resolução interna quando o FPS cai, sem congelar o jogo.
-  - A paleta usa midnight blue, teal, amber e coral, com identidade própria.
+  - A cena tem escala e densidade de simulador RP; não deve parecer uma pista vazia ou um diorama low-poly.
   - **Presentation proof:** capturas `/` e `/?demo` no preview WebDev.
 
 ## Fora do vertical slice
