@@ -69,3 +69,53 @@ button { font: inherit; }
 .keyboard-hint { position: absolute; right: 28px; bottom: 10px; color: rgba(226,237,227,.55); font-size: 9px; letter-spacing: .04em; }
 @media (max-width: 680px) { .hud-topline { top: 13px; left: 14px; right: 14px; } .brand-mark { width: 35px; height: 35px; font-size: 20px; } .brand-title { font-size: 15px; } .brand-subtitle { font-size: 6px; } .stat-chip { min-width: 84px; padding: 7px 8px; } .stat-chip strong { font-size: 11px; } .hud-middle { top: 70px; left: 14px; transform: scale(.78); transform-origin: top left; } .hud-bottom { left: 14px; bottom: 104px; transform: scale(.9); transform-origin: bottom left; } .touch-ui { right: 14px; bottom: 18px; gap: 5px; transform: scale(.76); transform-origin: bottom right; } .keyboard-hint { display: none; } }
 @media (min-width: 900px) { .touch-ui { opacity: .75; } }
+
+/* Mobile landscape HUD — inspired by modern RP driving games */
+.rotate-lock { display: none; }
+.movement-zone { display: flex; align-items: end; gap: 14px; }
+.joystick { position: relative; width: 142px; height: 142px; border-radius: 50%; touch-action: none; pointer-events: auto; background: radial-gradient(circle at 35% 28%, rgba(82,151,151,.28), rgba(4,17,27,.84) 68%); border: 1px solid rgba(204,239,222,.3); box-shadow: inset 0 0 0 11px rgba(4,12,20,.26), 0 14px 34px rgba(0,0,0,.34); }
+.joystick-ring { position: absolute; inset: 22px; border: 1px dashed rgba(196,231,215,.24); border-radius: 50%; }
+.joystick-cross { position: absolute; left: 50%; top: 50%; opacity: .22; background: #bfe2d1; transform: translate(-50%,-50%); }
+.joystick-cross.horizontal { width: 74px; height: 1px; }
+.joystick-cross.vertical { width: 1px; height: 74px; }
+.joystick-knob { position: absolute; left: 50%; top: 50%; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%; color: #eaf7e9; background: linear-gradient(145deg, rgba(55,137,132,.94), rgba(16,67,75,.96)); border: 1px solid rgba(201,249,222,.65); box-shadow: 0 8px 18px rgba(0,0,0,.35), inset 0 2px 6px rgba(255,255,255,.16); transform: translate(0,0); transition: transform .08s ease-out; margin-left: -29px; margin-top: -29px; }
+.joystick-knob span { font-size: 18px; text-shadow: 0 0 10px rgba(193,255,226,.8); }
+.sprint-btn { width: 56px; height: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; border: 1px solid rgba(255,199,106,.48); border-radius: 18px; color: #ffd681; background: rgba(18,29,38,.78); box-shadow: 0 8px 18px rgba(0,0,0,.25); touch-action: none; }
+.sprint-btn span { font-size: 22px; line-height: 18px; }
+.sprint-btn small, .round-btn small { font-size: 7px; letter-spacing: .12em; font-weight: 900; }
+.sprint-btn:active, .round-btn:active { transform: scale(.94); }
+.action-pad { width: 152px; height: 142px; display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
+.round-btn { position: relative; inset: auto; width: 60px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border-radius: 50%; }
+.round-btn span { font-size: 21px; line-height: 18px; }
+.round-btn.horn { color: #ffc76a; border-color: rgba(255,199,106,.5); }
+.round-btn.enter { width: 78px; height: 78px; color: #07131d; background: linear-gradient(145deg, #ffd97f, #ed9b46); border: 2px solid rgba(255,245,192,.7); box-shadow: 0 0 0 5px rgba(255,190,91,.12), 0 10px 25px rgba(255,174,69,.25); opacity: 0; transform: scale(.72); pointer-events: none; transition: opacity .18s ease-out, transform .18s ease-out; }
+.round-btn.enter.is-visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+.round-btn.enter span { font-size: 25px; font-weight: 900; }
+.hud-bottom { left: 50%; right: auto; bottom: 23px; transform: translateX(-50%); }
+.context-card { min-width: 250px; justify-content: center; }
+.keyboard-hint { right: 50%; transform: translateX(50%); bottom: 5px; }
+@media (max-width: 900px) and (orientation: landscape) {
+  .hud-topline { top: 10px; left: 18px; right: 18px; }
+  .brand-mark { width: 34px; height: 34px; font-size: 18px; }
+  .brand-title { font-size: 14px; }
+  .brand-subtitle { font-size: 6px; }
+  .stat-chip { min-width: 80px; padding: 6px 8px; }
+  .stat-chip strong { font-size: 11px; }
+  .hud-middle { top: 62px; left: 18px; transform: scale(.72); transform-origin: top left; }
+  .touch-ui { left: 18px; right: 18px; bottom: 12px; justify-content: space-between; gap: 0; transform: none; }
+  .joystick { width: 122px; height: 122px; }
+  .joystick-knob { width: 52px; height: 52px; margin-left: -26px; margin-top: -26px; }
+  .sprint-btn { width: 48px; height: 48px; }
+  .action-pad { width: 140px; height: 122px; gap: 10px; }
+  .round-btn { width: 52px; height: 52px; }
+  .round-btn.enter { width: 68px; height: 68px; }
+  .hud-bottom { bottom: 9px; transform: translateX(-50%) scale(.82); transform-origin: bottom center; }
+  .keyboard-hint { display: none; }
+}
+@media (orientation: portrait) {
+  .rotate-lock { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #f5f3df; background: radial-gradient(circle, #153849, #060d18 72%); text-align: center; letter-spacing: .12em; }
+  .rotate-lock strong { font-size: 16px; }
+  .rotate-lock span { color: #9eb4b8; font-size: 10px; letter-spacing: .04em; }
+  .rotate-icon { color: #ffc76a; font-size: 44px; animation: rotate-phone 1.8s ease-in-out infinite; }
+}
+@keyframes rotate-phone { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(90deg); } }

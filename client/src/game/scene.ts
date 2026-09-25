@@ -607,7 +607,7 @@ class GameWorld {
   }
 
   private nearestVehicle() {
-    return this.vehicles.find((vehicle) => distanceXZ(vehicle.root.position, this.player.root.position) < 5.2) ?? null;
+    return this.vehicles.find((vehicle) => distanceXZ(vehicle.root.position, this.player.root.position) < 4.8) ?? null;
   }
 
   private saveProgress() {
@@ -789,8 +789,13 @@ class GameWorld {
     set("cash", `R$ ${this.cash.toLocaleString("pt-BR")}`);
     set("respect", `${this.respect}%`);
     set("mode-pill", this.state === "driving" ? (this.activeVehicle?.kind ?? "VEÍCULO") : "A PÉ");
-    set("enter-icon", this.state === "driving" ? "↩" : "E");
     const nearest = this.nearestVehicle();
+    const enterButton = document.getElementById("enter-btn");
+    const vehicleAction = this.state === "driving" || Boolean(nearest);
+    enterButton?.classList.toggle("is-visible", vehicleAction);
+    enterButton?.setAttribute("aria-hidden", vehicleAction ? "false" : "true");
+    set("enter-icon", this.state === "driving" ? "↩" : "↗");
+    set("enter-label", this.state === "driving" ? "SAIR" : (nearest?.kind ?? "ENTRAR"));
     if (this.state === "driving") {
       set("context-text", `Dirija até o ponto ${this.missionIndex + 1} · H buzina`);
       set("context-icon", "⌁");
