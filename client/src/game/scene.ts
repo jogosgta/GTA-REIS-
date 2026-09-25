@@ -5,6 +5,7 @@ import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { Mesh } from "@babylonjs/core/Meshes/mesh";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
+import { CreateCapsule } from "@babylonjs/core/Meshes/Builders/capsuleBuilder";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
@@ -169,22 +170,38 @@ class Player {
     const jacket = material(scene, "yellow-jacket", palette.amber);
     const denim = material(scene, "denim", Color3.FromHexString("#244f69"));
     const shoe = material(scene, "shoes", Color3.FromHexString("#1a2029"));
-    this.body = MeshBuilder.CreateCylinder("player-body", { diameterTop: 0.57, diameterBottom: 0.76, height: 1.05, tessellation: 10 }, scene);
+    this.body = CreateCapsule("player-body", { height: 1.2, radius: 0.34, tessellation: 12, subdivisions: 4 }, scene);
     this.body.position = new Vector3(0, 1.36, 0);
+    this.body.scaling.y = 0.88;
     this.body.material = jacket;
     this.body.parent = this.root;
     const head = MeshBuilder.CreateSphere("player-head", { diameter: 0.52, segments: 12 }, scene);
     head.position = new Vector3(0, 2.2, 0);
     head.material = skin;
     head.parent = this.root;
-    const cap = cylinder(scene, "player-cap", 0.62, 0.13, new Vector3(0, 2.45, 0), paletteMat(scene, "cap", palette.coral), this.root);
-    cap.rotation.z = Math.PI / 2;
-    this.legs = [
-      box(scene, "player-leg-a", { width: 0.25, height: 0.8, depth: 0.28 }, new Vector3(-0.19, 0.47, 0), denim, this.root),
-      box(scene, "player-leg-b", { width: 0.25, height: 0.8, depth: 0.28 }, new Vector3(0.19, 0.47, 0), denim, this.root),
-      box(scene, "player-shoe-a", { width: 0.28, height: 0.14, depth: 0.5 }, new Vector3(-0.19, 0.04, 0.08), shoe, this.root),
-      box(scene, "player-shoe-b", { width: 0.28, height: 0.14, depth: 0.5 }, new Vector3(0.19, 0.04, 0.08), shoe, this.root),
-    ];
+    const cap = MeshBuilder.CreateSphere("player-cap", { diameter: 0.64, segments: 12 }, scene);
+    cap.position = new Vector3(0, 2.38, 0);
+    cap.scaling.y = 0.28;
+    cap.material = paletteMat(scene, "cap", palette.coral);
+    cap.parent = this.root;
+    for (const side of [-1, 1]) {
+      const arm = cylinder(scene, "player-arm", 0.2, 0.86, new Vector3(side * 0.48, 1.44, 0), jacket, this.root);
+      arm.rotation.z = side * 0.16;
+    }
+    this.legs = [];
+    for (const side of [-1, 1]) {
+      const leg = CreateCapsule("player-leg", { height: 0.86, radius: 0.14, tessellation: 10, subdivisions: 3 }, scene);
+      leg.position = new Vector3(side * 0.19, 0.47, 0);
+      leg.material = denim;
+      leg.parent = this.root;
+      this.legs.push(leg);
+      const foot = CreateCapsule("player-shoe", { height: 0.42, radius: 0.14, tessellation: 10, subdivisions: 3, orientation: new Vector3(0, 0, 1) }, scene);
+      foot.position = new Vector3(side * 0.19, 0.08, 0.08);
+      foot.scaling.y = 0.45;
+      foot.material = shoe;
+      foot.parent = this.root;
+      this.legs.push(foot);
+    }
   }
 
   animateWalking(active: boolean, dt: number) {
@@ -215,34 +232,59 @@ class Vehicle {
     this.kind = kind;
     this.engineColor = bodyColor;
     this.maxSpeed = kind === "CARRO" ? 12 : 15;
-    this.root = MeshBuilder.CreateBox(`${kind.toLowerCase()}-root`, { width: kind === "CARRO" ? 1.9 : 0.8, height: 0.58, depth: kind === "CARRO" ? 3.5 : 2.15 }, scene);
+    this.root = CreateCapsule(`${kind.toLowerCase()}-root`, {
+      height: kind === "CARRO" ? 3.5 : 2.25,
+      radius: kind === "CARRO" ? 0.92 : 0.42,
+      tessellation: 16,
+      subdivisions: 4,
+      orientation: new Vector3(0, 0, 1),
+    }, scene);
     this.root.position.copyFrom(position);
+    this.root.scaling.y = kind === "CARRO" ? 0.62 : 0.7;
     this.root.material = material(scene, `${kind}-body`, bodyColor);
     const black = material(scene, `${kind}-rubber`, Color3.FromHexString("#11171d"));
     const glass = material(scene, `${kind}-glass`, Color3.FromHexString("#9adbd0"), true);
     const chrome = material(scene, `${kind}-chrome`, Color3.FromHexString("#d5e2db"), true);
     if (kind === "CARRO") {
       box(scene, "car-hood", { width: 1.72, height: 0.25, depth: 1.1 }, new Vector3(0, 0.4, 1.05), this.root.material as StandardMaterial, this.root);
-      box(scene, "car-cabin", { width: 1.45, height: 0.67, depth: 1.45 }, new Vector3(0, 0.76, -0.18), glass, this.root);
+      const cabin = CreateCapsule("car-cabin", { height: 1.45, radius: 0.62, tessellation: 14, subdivisions: 3, orientation: new Vector3(0, 0, 1) }, scene);
+      cabin.position = new Vector3(0, 0.76, -0.18);
+      cabin.scaling = new Vector3(1.05, 0.62, 0.92);
+      cabin.material = glass;
+      cabin.parent = this.root;
       box(scene, "car-roof", { width: 1.52, height: 0.1, depth: 1.25 }, new Vector3(0, 1.12, -0.2), chrome, this.root);
       box(scene, "car-light-a", { width: 0.42, height: 0.13, depth: 0.06 }, new Vector3(-0.55, 0.47, 1.77), material(scene, "car-light", palette.amber, true), this.root);
       box(scene, "car-light-b", { width: 0.42, height: 0.13, depth: 0.06 }, new Vector3(0.55, 0.47, 1.77), material(scene, "car-light-b", palette.amber, true), this.root);
       for (const x of [-0.93, 0.93]) for (const z of [-1.05, 1.05]) {
-        const wheel = cylinder(scene, "car-wheel", 0.48, 0.22, new Vector3(x, -0.22, z), black, this.root);
+        const wheel = MeshBuilder.CreateTorus("car-wheel", { diameter: 0.55, thickness: 0.16, tessellation: 18 }, scene);
+        wheel.position = new Vector3(x, -0.22, z);
         wheel.rotation.z = Math.PI / 2;
+        wheel.material = black;
+        wheel.parent = this.root;
         this.wheels.push(wheel);
         if (z < 0) this.frontWheels.push(wheel);
+        const hub = cylinder(scene, "car-hubcap", 0.21, 0.24, new Vector3(x, -0.22, z), chrome, this.root);
+        hub.rotation.z = Math.PI / 2;
       }
     } else {
       const seat = material(scene, "bike-seat", Color3.FromHexString("#20212a"));
-      box(scene, "bike-tank", { width: 0.62, height: 0.38, depth: 0.78 }, new Vector3(0, 0.36, 0.18), this.root.material as StandardMaterial, this.root);
+      const tank = CreateCapsule("bike-tank", { height: 0.78, radius: 0.31, tessellation: 12, subdivisions: 3, orientation: new Vector3(0, 0, 1) }, scene);
+      tank.position = new Vector3(0, 0.36, 0.18);
+      tank.scaling.y = 0.72;
+      tank.material = this.root.material;
+      tank.parent = this.root;
       box(scene, "bike-seat", { width: 0.48, height: 0.16, depth: 0.76 }, new Vector3(0, 0.6, -0.46), seat, this.root);
       box(scene, "bike-handle", { width: 0.95, height: 0.08, depth: 0.08 }, new Vector3(0, 0.86, 0.74), chrome, this.root);
       box(scene, "bike-light", { width: 0.24, height: 0.2, depth: 0.12 }, new Vector3(0, 0.6, 1.04), material(scene, "bike-light", palette.amber, true), this.root);
       for (const z of [-0.75, 0.83]) {
-        const wheel = cylinder(scene, "bike-wheel", 0.56, 0.12, new Vector3(0, 0, z), black, this.root);
+        const wheel = MeshBuilder.CreateTorus("bike-wheel", { diameter: 0.58, thickness: 0.13, tessellation: 18 }, scene);
+        wheel.position = new Vector3(0, 0, z);
         wheel.rotation.x = Math.PI / 2;
+        wheel.material = black;
+        wheel.parent = this.root;
         this.wheels.push(wheel);
+        const hub = cylinder(scene, "bike-hubcap", 0.22, 0.14, new Vector3(0, 0, z), chrome, this.root);
+        hub.rotation.x = Math.PI / 2;
       }
     }
   }
@@ -365,6 +407,9 @@ class GameWorld {
     this.camera.minZ = 0.1;
     this.camera.maxZ = 250;
     this.camera.fov = 1.02;
+    const initialTarget = this.player.root.position.add(new Vector3(0, 1.2, 0));
+    this.camera.position = initialTarget.add(new Vector3(0, 8.8, -13));
+    this.camera.setTarget(initialTarget);
     this.camera.attachControl(canvas, false);
     scene.activeCamera = this.camera;
     scene.imageProcessingConfiguration.toneMappingEnabled = true;
