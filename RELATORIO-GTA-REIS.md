@@ -3,7 +3,7 @@
 **Projeto:** GTA REIS  
 **Repositório:** `jogosgta/GTA-REIS-`  
 **Última atualização:** 25/09/2026  
-**Versão do código:** `1be85de`
+**Versão do código:** `free-look-controls`
 
 ## Estado atual
 
@@ -19,6 +19,8 @@ O GTA REIS é um vertical slice 3D jogável para navegador e Android, ambientado
 - Botão separado de **Correr** usando o mesmo sistema de movimento.
 - Botão de buzina com visual compacto.
 - Aviso para girar o celular quando a tela estiver em modo retrato.
+- Arrasto no lado direito da tela para girar a câmera livremente, com limite vertical e horizontal para manter o personagem visível.
+- Eixo vertical do joystick corrigido: tocar para cima agora faz o personagem avançar, sem andar para trás.
 
 ### Veículos
 
@@ -41,6 +43,7 @@ O GTA REIS é um vertical slice 3D jogável para navegador e Android, ambientado
 - `pnpm build` — aprovado.
 - Preview mobile em paisagem — validado visualmente.
 - Entrada no carro pelo botão contextual — validada.
+- Free-look por arrasto e direção para frente no joystick — validados no build.
 - APK debug paisagem — compilado com sucesso.
 
 ## APK de teste
@@ -72,7 +75,6 @@ A partir deste relatório, toda alteração relevante do GTA REIS deve:
 
 ## Próximas melhorias planejadas
 
-- Câmera livre controlada por arrasto do dedo.
 - Colisões mais detalhadas entre veículos, prédios e personagens.
 - Garagem com compra, seleção e personalização de carros e motos.
 - APK release assinado para distribuição pública.
