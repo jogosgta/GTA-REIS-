@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GTA REIS</string>
+    <string name="title_activity_main">GTA REIS</string>
+    <string name="package_name">com.gta.reis</string>
+    <string name="custom_url_scheme">com.gta.reis</string>
+</resources>

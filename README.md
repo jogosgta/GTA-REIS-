@@ -1,45 +1,35 @@
 # GTA REIS
 
-
-
 Jogo 3D de mundo aberto inspirado na vida urbana de São Paulo.
-
-
 
 ## Conteúdo
 
-
-
-O arquivo [GTA-REIS-source.zip](./GTA-REIS-source.zip) contém o código completo do projeto: frontend React, cena Babylon.js, HUD, controles, missão, veículos, NPCs, assets e configurações.
-
-
+Este repositório contém o código do projeto em pastas: frontend React, cena Babylon.js, HUD, controles, missão, veículos, NPCs, configuração Capacitor e projeto Android.
 
 ## Preview
 
-
-
 [Abra o preview jogável do GTA REIS](https://3000-i0cpskmu5ok9hwp801xuc-84be0451.us1.manus.computer/)
-
-
 
 ## Como usar o código
 
+```bash
+pnpm install
+pnpm dev
+```
 
+## Gerar o APK debug
 
-1. Baixe `GTA-REIS-source.zip`.
-2. 
-2. Extraia o arquivo.
-3. 
-3. Entre na pasta `gta-reis`.
-4. 
-4. Execute `pnpm install`.
-5. 
-5. Execute `pnpm dev` para abrir o jogo localmente.
-6. 
+```bash
+pnpm build
+pnpm exec cap sync android
+cd android
+./gradlew assembleDebug
+```
 
+O APK debug gerado fica em `android/app/build/outputs/apk/debug/app-debug.apk`.
 
-O projeto é um vertical slice web jogável. A conversão para APK Android ainda requer empacotamento com Capacitor ou Android Studio.
+## Identidade Android
 
-
-
-
+- Application ID: `com.gta.reis`
+- Nome: `GTA REIS`
+- Android mínimo: API 24
